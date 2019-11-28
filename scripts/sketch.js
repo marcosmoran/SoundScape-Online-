@@ -12,7 +12,7 @@ var coinRate = 50;
 var coinCounter = 0;
 var currentCoin = 0;
 var powerCounter = 0;
-var mid, lowMid, highMid;
+var mid, lowMid, highMid, bass, treble;
 var fft, peakDetect;
 var scoreGlobal, oldScoreGlobal;
 var currentObstacle = 0;
@@ -20,14 +20,14 @@ var targetObstacle = 2;
 
 var obstacleCounter = 0;
 var songLength;
-var highestValue = 400;
-var lowestValue = 100;
+var highestValue = 450;
+var lowestValue = 250;
 var globalValue = [];
 var globalCount = 0;
 
 var starSpeed;
 
-//make 4 payable songs with predetermined high lows
+//make 4 payable songs with predetermined high lows (High + bicep 200,400) kaytra Dis 450,250
 //MAKE HOMESCREEN
 //MAKE HUD
 ///* Animations
@@ -44,7 +44,7 @@ var gameState = 0;
 var button;
 
 function preload() {
-     sound = loadSound("/songs/d.mp3");
+     sound = loadSound("/songs/dis.mp3");
     songLength = sound.duration();
 }
    
@@ -109,28 +109,12 @@ function playSong(){
     starSpawner();
     powerupSpawner()
     obstacleUpdater()
-    enemy.fly();
-   
- 
     
-   
+     enemy.fly();
     player.update();
     powerup.update();
    
- 
-   
- // var waveform = fft.waveform();
-//  
-//  noFill();
-//  beginShape();
-//  stroke(255,255,255, 50); // waveform is red
-//  strokeWeight(1);
-//  for (var i = 0; i< waveform.length; i++){
-//    var x = map(i, 0, waveform.length, 0, width);
-//    var y = map( waveform[i], -1, 1, 0, height);
-//    vertex(x,y);
-//  }
-//  endShape();
+
 
     
     }
@@ -167,38 +151,42 @@ function coinSpawner(){
 }
 
 function analyzeSound(){
+
    fft.analyze();
    fft.smooth();
-   
+   bass = fft.getEnergy("bass");
+   treble = fft.getEnergy("treble");    
    mid = fft.getEnergy("mid");
    lowMid = fft.getEnergy("lowMid");
    highMid = fft.getEnergy("highMid");
   scoreGlobal = (lowMid * 0.66) + (0.8 * mid) + highMid;
+//     scoreGlobal = (highMid + treble);
  
-  
+  console.log(scoreGlobal);
     
 }
 
 function starSpawner(){
       //white stars
- var size = map(scoreGlobal, 200, highestValue, 0, 7);   
- 
+ var size = map(scoreGlobal, lowestValue, highestValue, 0, 8);   
+ var colormap = map(scoreGlobal, lowestValue, highestValue, 0, 255);  
+    var starcolor = color(255, colormap,colormap );
     if (scoreGlobal > highestValue -20) {
       starSpeed = 5;}
     else {
-        starSpeed=2;
+        starSpeed=3.5;
     }
       
   for(var i = 0; i < starArray.length; i++) {
       
-    starArray[i].show(size);
+    starArray[i].show(size,255);
         starArray[i].update(starSpeed);
 
   }
      for(var j = 0; j < starArray2.length; j++) {
       
-        starArray2[j].show(3);
-        starArray2[j].update(3);
+        starArray2[j].show(2,starcolor);
+        starArray2[j].update(1);
 
   }
 }

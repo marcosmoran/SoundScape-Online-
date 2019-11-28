@@ -16,8 +16,11 @@ class Stars {
   
   
  update(speed) {
-
-    stroke(255,255, 255, 255);
+if (scoreGlobal > highestValue -20 ) {
+       stroke(255,255, 0, 200);
+         line(this.px, this.py, this.x , this.y); 
+     }
+   
     
       
     this.x -= speed;
@@ -25,16 +28,13 @@ class Stars {
     this.y += 0.1;
     this.py = this.y;
     this.px = this.x;
-     if (scoreGlobal > highestValue -20 ) {
-       stroke(255,255, 0, 200);
-line(this.px, this.py, this.x , this.y); 
-     }}
+     }
            
 
-  show(size) {
+  show(size, color) {
     strokeWeight(1);
     stroke(0);
-    fill(255);
+    fill(color);
     
     ellipse(this.x, this.y, size, size);
     

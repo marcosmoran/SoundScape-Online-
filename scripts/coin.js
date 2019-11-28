@@ -5,9 +5,10 @@ class Coin {
         this.coinXPosition = width + 10;
         this.coinYPosition = random(20, height -20);
         this.coinImage = createSprite(this.coinXPosition, this.coinYPosition);
-        this.coinImage.scale = 0.05;
+        this.coinImage.scale = 0.7;
         this.coinImage.depth = 3;
-        this.coinImage.addImage(loadImage("images/coin.png"));
+        this.coinAnimation = this.coinImage.addAnimation('spin',"images/coin/gold_coin_round_diamond_1.png","images/coin/gold_coin_round_diamond_6.png");
+        this.coinAnimation.frameDelay =6;
         this.trigger = false;
         
     }
@@ -17,7 +18,7 @@ class Coin {
       
        if(this.trigger == true) {
               
-            this.coinImage.position.x  -= 5;
+            this.coinImage.position.x  -= 7;
             this.collide();
             
         

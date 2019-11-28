@@ -69,7 +69,7 @@ class Player {
     respawn(){
        
         if(this.shipImage.position.y < 200) {
-            this.shipImage.position.y++;
+            this.shipImage.position.y+= 4;
             }
         
         if(this.shipImage.position.y >= 200) {
