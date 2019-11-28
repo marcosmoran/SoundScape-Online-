@@ -1,46 +1,40 @@
 class Stars {
-  
- 
 
   constructor() {
      
      this.y = random(height);
      this.x = random(width);
-     this.py = this.y;
-     this.px = this.x;
+     this.py =this.x;
+     this.px =this.y;
+    
+     
+      this.lines = false;
   }
-
+  
+ 
     
   
   
-// this.update(float speed, float topSpeed, boolean lines) {
-//    
-//    if (theme.scoreGlobal > highest) {
-//      x = x - topSpeed; 
-//       }
-//    else {
-//    x = x - speed; 
-//    }
-//    y = y - 0.1;
-//    py = y;
-//    px = x;
-//     
-//      if (lines == true) {
-//     
-//     stroke(255,255, 255, 255);
-//      line(px , py, x , y); 
-//      }
-//    if (x < 1) {
-//      x = random(width, width * 2);
-//      y = random(height + 20);
-//  }
-//}
+ update(speed) {
+
+    stroke(255,255, 255, 255);
+    
+      
+    this.x -= speed;
+    
+    this.y += 0.1;
+    this.py = this.y;
+    this.px = this.x;
+     if (scoreGlobal > highestValue -20 ) {
+       stroke(255,255, 0, 200);
+line(this.px, this.py, this.x , this.y); 
+     }}
+           
 
   show(size) {
     strokeWeight(1);
     stroke(0);
     fill(255);
-    this.x -= 2;
     
     ellipse(this.x, this.y, size, size);
     
@@ -51,13 +45,4 @@ class Stars {
       }
    
     }
-// 
-//  void lines() {
-//      if (theme.scoreGlobal > highest  && theme.oldScoreGlobal > highest ) {
-//       stroke(255,255, 0, 200);
-//      line(px, py, x, y); 
-//      
-//     
-//       }
-//    }
 }

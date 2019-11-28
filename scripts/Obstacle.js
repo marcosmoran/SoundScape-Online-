@@ -17,7 +17,7 @@ class Obstacle {
         
         if  (this.obstacleTrigger === true) {
             this.obstacleImage.visible = true;
-            this.obstacleImage.position.x  -= 5;
+            this.obstacleImage.position.x  -= 10;
             this.collide();
            
            if(this.destroyed){
@@ -40,10 +40,11 @@ class Obstacle {
         
     }
     collide(){
+        if(powerup.active){
          if(this.obstacleImage.overlap(powerup.shieldOnSprite)){
-                powerup.shieldOff = true;
+            powerup.shieldOff = true;
              this.destroyed = true;
-            }
+            }}
         if(player.immunity === false && player.shipPosition > 0){
        
             if(this.obstacleImage.overlap(player.shipImage)){

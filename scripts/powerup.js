@@ -25,13 +25,13 @@ class Powerup {
         this.seed;
         this.currentMillis;
         this.startTime;
-        this.endTime = 10000;
+        this.endTime = 5000;
         this.currentPosition;
         this.boostX;
     }
     
     update(){
-        
+             drawSprites();
         if(this.select === true) {
             this.select = false;
             this.selector();
@@ -84,7 +84,7 @@ class Powerup {
         }
        
     }
-    
+    //chances of getting specific powerup depending on position
     selector(){
         this.seed = random(0,9);
         this.currentPosition = player.shipPosition;
@@ -183,7 +183,7 @@ class Powerup {
     
     reInitialize() {
         
-        this.powerXPosition = 1500;
+        this.powerXPosition = width + 20;
         this.powerYPosition = random(50, 400);
         this.powerSprite.position.x = this.powerXPosition;
         this.powerSprite.position.y = this.powerYPosition;
@@ -193,7 +193,7 @@ class Powerup {
     boost(){
         
         if(this.activated) {
-        this.boostX = player.shipXPosition + 200;
+        this.boostX = player.shipXCurrentPosition + 200;
         this.active = true;
         this.activated = false;
         
@@ -201,11 +201,12 @@ class Powerup {
         }
         
         if(this.active){
-            if(player.shipXPosition < this.boostX){
-            player.shipXPosition += 5;
+            if(player.shipXCurrentPosition < this.boostX){
+            player.shipXCurrentPosition += 5;
             }
-        if(player.shipXPosition == this.boostX) {
-            player.shipPosition++;
+            
+        if(player.shipXCurrentPosition == this.boostX) {
+            player.shipXCurrentPosition++;
             player.immunity = false;
             this.active = false;
             this.boostFlag = false;
@@ -251,6 +252,7 @@ class Powerup {
              }}}
     
     shield(){
+        
          if (this.activated) {
                this.shieldOnSprite.visible = true;
                this.shieldOnSprite.position.x = player.shipImage.position.x;
@@ -259,22 +261,22 @@ class Powerup {
               this.shieldOff = false;
                this.activated = false;
                this.active = true; 
-             drawSprites();
+        
          }
         if (this.active) {
             
              this.shieldOnSprite.position.x = player.shipImage.position.x;
             this.shieldOnSprite.position.y = player.shipImage.position.y;
-             drawSprites();
+          
+            
             if(this.shieldOff) {
-                this.shieldOnSprite.visible = false;
-                player.immunity = false;
-                this.active = false;
-                this.shieldFlag = false;
                 
+                this.shieldFlag = false;
+                this.active = false;
+                this.shieldOnSprite.remove();
+                player.immunity = false;
+             
             }
-            
-            
-        }
+         }
     }
     }

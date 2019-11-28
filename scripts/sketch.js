@@ -7,6 +7,7 @@ var obstacle;
 var obstacleArray = [];
 var coinArray = [];
 var starArray = [];
+var starArray2 = [];
 var coinRate = 50;
 var coinCounter = 0;
 var currentCoin = 0;
@@ -19,18 +20,22 @@ var targetObstacle = 2;
 
 var obstacleCounter = 0;
 var songLength;
-var highestValue = 0;
+var highestValue = 400;
 var lowestValue = 100;
 var globalValue = [];
 var globalCount = 0;
 
+var starSpeed;
+
 //make 4 payable songs with predetermined high lows
 //MAKE HOMESCREEN
 //MAKE HUD
-
-//fix powerup sprite
-//Fix meteor sprite and spawning and add fire
-// explosion when hit
+///* Animations
+//alien bouncing
+//alien hit
+//collision explosion
+//meteor fire
+//coin spin*/
 //make coins bounce in sine wave
 
 
@@ -39,7 +44,7 @@ var gameState = 0;
 var button;
 
 function preload() {
-     sound = loadSound("home.mp3");
+     sound = loadSound("/songs/d.mp3");
     songLength = sound.duration();
 }
    
@@ -50,7 +55,7 @@ function setup() {
     var cnv =createCanvas(1920, 500);
     cnv.position(0, 200);
    p5.disableFriendlyErrors = true;
-   console.log("initialised");
+
     fft = new p5.FFT();
      player = new Player();
      enemy = new Enemy();
@@ -71,7 +76,11 @@ function setup() {
         
         starArray[i] = new Stars();
     }
-     
+       for(var i = 0;  i < 100; i++){
+        
+        starArray2[i] = new Stars();
+    }
+     playSong()
     
 //   button = createButton('submit');
 //   button.position(width - 20, height - 20);
@@ -90,29 +99,8 @@ function draw() {
 function playSong(){
     sound.play();
 }
-function preAnalysis() {
-    console.log("run");
-   // analyzeSound();
-    //console.log(globalCount);
-    
-    if(globalCount < 200) {
-        
-       if(scoreGlobal > highestValue) {
-            
-            highestValue = scoreGlobal;
-        }
-         
-        if(scoreGlobal < lowestValue) {
-            
-            lowestValue = scoreGlobal;
-        }
-        globalCount++;
-    }  else {
-        sound.stop();
-    gameState=1;
-        
-    }
-}
+
+
  function mainGame(){
   
     cycleBG();
@@ -155,13 +143,7 @@ function loadImages() {
 }
 function cycleBG(){
     background(0);
-//    image(backdrop, backdropx, 0);
-//    image(backdrop, backdropx + backdrop.width, 0);
-//      
-//      if (backdropx <= -(backdrop.width)) {
-//        backdropx = 0;
-//      }
-//      backdropx = backdropx - 5;
+
    
     
 }
@@ -192,18 +174,31 @@ function analyzeSound(){
    lowMid = fft.getEnergy("lowMid");
    highMid = fft.getEnergy("highMid");
   scoreGlobal = (lowMid * 0.66) + (0.8 * mid) + highMid;
- //console.log(scoreGlobal);
+ 
   
     
 }
 
 function starSpawner(){
       //white stars
- var size = map(scoreGlobal, 100, 400, 0, 7);   
-
+ var size = map(scoreGlobal, 200, highestValue, 0, 7);   
+ 
+    if (scoreGlobal > highestValue -20) {
+      starSpeed = 5;}
+    else {
+        starSpeed=2;
+    }
+      
   for(var i = 0; i < starArray.length; i++) {
       
     starArray[i].show(size);
+        starArray[i].update(starSpeed);
+
+  }
+     for(var j = 0; j < starArray2.length; j++) {
+      
+        starArray2[j].show(3);
+        starArray2[j].update(3);
 
   }
 }
