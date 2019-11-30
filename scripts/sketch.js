@@ -20,12 +20,13 @@ var targetObstacle = 2;
 
 var obstacleCounter = 0;
 var songLength;
-var highestValue = 450;
-var lowestValue = 250;
+var highestValue = 500;
+var lowestValue = 300;
 var globalValue = [];
 var globalCount = 0;
-
+var logo, logoplanet;
 var starSpeed;
+
 
 //make 4 payable songs with predetermined high lows (High + bicep 200,400) kaytra Dis 450,250
 //MAKE HOMESCREEN
@@ -44,7 +45,7 @@ var gameState = 0;
 var button;
 
 function preload() {
-     sound = loadSound("/songs/dis.mp3");
+     sound = loadSound("/songs/homescreen.mp3");
     songLength = sound.duration();
 }
    
@@ -92,36 +93,40 @@ function setup() {
 
 function draw() {
    //console.log(getFrameRate());
-
-   mainGame();
+homeScreen();
+   //mainGame();
 }
 
 function playSong(){
     sound.play();
 }
+function homeScreen() {
+    cycleBG();
+    analyzeSound();
+    starSpawner();
+    imageMode(CENTER);
+    image(logoplanet, width/2 -150,600, 700, 600);
+    image(logo, width/2 - 130,height/2 - 20);
+  
+}
 
-
- function mainGame(){
+ function mainGame() {
   
     cycleBG();
-   analyzeSound();
-    coinSpawner()
+    analyzeSound();
+    coinSpawner();
     starSpawner();
-    powerupSpawner()
-    obstacleUpdater()
-    
-     enemy.fly();
+    powerupSpawner();
+    obstacleUpdater();
+    enemy.fly();
     player.update();
     powerup.update();
-   
-
-
-    
-    }
+     }
 
 
 function loadImages() {
-    
+    logo = loadImage("/images/homescreen/logo.png");
+    logoplanet = loadImage("/images/homescreen/planet6.png");
     backdrop = loadImage("images/background2.png");
 
 }
