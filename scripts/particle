@@ -1,0 +1,21 @@
+class Particle {
+
+    constructor(){
+    this.x;
+    this.y;
+    this.brightness();
+    this.color();
+    
+    }
+    
+    this.update(imageX,imageyY,imageWidth, imageHeight){
+    
+      
+        this.x= random(imageX, imageWidth);
+        this.y = random(imageY, imageHeight);
+        
+        noStroke();
+        fill(255,0,0,random(100,255));
+        ellipse(this.x, this.y, 1,1);
+    }
+}

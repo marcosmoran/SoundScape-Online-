@@ -28,7 +28,7 @@ class Obstacle {
                this.reInitialize();
             }
     } 
-        drawSprites();
+       
     }
     
      reInitialize() {

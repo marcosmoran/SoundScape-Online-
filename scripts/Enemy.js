@@ -33,7 +33,7 @@ class Enemy {
         if (this.returnToFly){
             this.returnFly();
         }
-        drawSprites();
+
         
        
     }

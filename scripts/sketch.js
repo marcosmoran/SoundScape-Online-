@@ -8,6 +8,7 @@ var obstacleArray = [];
 var coinArray = [];
 var starArray = [];
 var starArray2 = [];
+var particleArray = [];
 var coinRate = 50;
 var coinCounter = 0;
 var currentCoin = 0;
@@ -24,12 +25,12 @@ var highestValue = 500;
 var lowestValue = 300;
 var globalValue = [];
 var globalCount = 0;
-var logo, logoplanet;
+var logo, logoplanet,playButton;
 var starSpeed;
-
+var state = 0;
 
 //make 4 payable songs with predetermined high lows (High + bicep 200,400) kaytra Dis 450,250
-//MAKE HOMESCREEN
+
 //MAKE HUD
 ///* Animations
 //alien bouncing
@@ -40,20 +41,19 @@ var starSpeed;
 //make coins bounce in sine wave
 
 
-var gameState = 0;
 
 var button;
 
 function preload() {
-     sound = loadSound("/songs/homescreen.mp3");
-    songLength = sound.duration();
+     homesong = loadSound("/songs/homescreen.mp3");
+    
 }
    
     
 
 function setup() {
-    //768
-    var cnv =createCanvas(1920, 500);
+    
+    var cnv = createCanvas(1920, 500);
     cnv.position(0, 200);
    p5.disableFriendlyErrors = true;
 
@@ -62,6 +62,11 @@ function setup() {
      enemy = new Enemy();
      powerup = new Powerup();
      loadImages();
+       
+    for(var i = 0;  i < 100; i++){
+        
+       particleArray[i] = new Particle();
+    }
     
     for(var i = 0;  i < 15; i++){
         
@@ -81,24 +86,29 @@ function setup() {
         
         starArray2[i] = new Stars();
     }
-     playSong()
+     playSong();
     
-//   button = createButton('submit');
-//   button.position(width - 20, height - 20);
-//   button.mousePressed(playSong);
-//   
- 
+
+
    
 }
 
 function draw() {
-   //console.log(getFrameRate());
-homeScreen();
-   //mainGame();
+ 
+    
+    if (state ==0){
+       homeScreen();  
+    }
+    if (state == 0.5){
+       songScreen();  
+    }
+   if (state==1){
+       mainGame();
+   }
 }
 
 function playSong(){
-    sound.play();
+    homesong.play();
 }
 function homeScreen() {
     cycleBG();
@@ -107,9 +117,24 @@ function homeScreen() {
     imageMode(CENTER);
     image(logoplanet, width/2 -150,600, 700, 600);
     image(logo, width/2 - 130,height/2 - 20);
+    fill(255);
+    textSize(40);
+    text("Click To Begin", width/2 - 270, 400);
+   // drawSprites();
   
 }
+function songScreen(){
+  
+     cycleBG();
+    analyzeSound();
+    starSpawner();
+    
+     for(var i = 0; i < particleArray.length; i++) {
+      
+         particleArray[i].update(100,400,100,400);
 
+  }
+}
  function mainGame() {
   
     cycleBG();
@@ -121,6 +146,7 @@ function homeScreen() {
     enemy.fly();
     player.update();
     powerup.update();
+    drawSprites();
      }
 
 
@@ -167,7 +193,7 @@ function analyzeSound(){
   scoreGlobal = (lowMid * 0.66) + (0.8 * mid) + highMid;
 //     scoreGlobal = (highMid + treble);
  
-  console.log(scoreGlobal);
+  
     
 }
 
@@ -179,7 +205,7 @@ function starSpawner(){
     if (scoreGlobal > highestValue -20) {
       starSpeed = 5;}
     else {
-        starSpeed=3.5;
+        starSpeed=2.5;
     }
       
   for(var i = 0; i < starArray.length; i++) {
@@ -241,5 +267,9 @@ function powerupSpawner() {
         
         powerCounter = 0;
     }
+}
+function mousePressed(){
+    if (state== 0){
+    state = 0.5;}
 }
 

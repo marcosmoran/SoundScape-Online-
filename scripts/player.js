@@ -55,7 +55,7 @@ class Player {
                 this.shipPosition = 0;
             }
         
-        drawSprites();
+   
     }
     die() {
         this.immunity = true;

@@ -31,7 +31,7 @@ class Powerup {
     }
     
     update(){
-             drawSprites();
+             
         if(this.select === true) {
             this.select = false;
             this.selector();

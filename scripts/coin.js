@@ -29,7 +29,7 @@ class Coin {
            this.reInitialize();
             
         }
-        drawSprites();
+    
     }
     
     reInitialize(){
