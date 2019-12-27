@@ -17,4 +17,4 @@
 You can watch a demo of the fully operational Java Version <a href="https://vimeo.com/267766850">here.</a></strong>
 <p>
 
-<h1><a href = "https://marcosmoran.github.io/SoundScape-Online"/> PLAY!</a></h1>
+<h1><a href = "https://marcosmoran.github.io/SoundScape-Online-"/> PLAY!</a></h1>
