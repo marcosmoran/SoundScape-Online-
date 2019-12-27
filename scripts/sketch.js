@@ -1,5 +1,5 @@
-var player;
-var enemy;
+var player, enemy;
+var bicep, kay, dis, high;
 var sound;
 var backdrop;
 var backdropx = 0;
@@ -29,6 +29,10 @@ var logo, logoplanet,playButton;
 var starSpeed;
 var state = 0;
 
+var bicepSong, disclosureSong, kaySong, highSong;
+songPlaying = false;
+
+
 //make 4 payable songs with predetermined high lows (High + bicep 200,400) kaytra Dis 450,250
 
 //MAKE HUD
@@ -46,23 +50,24 @@ var button;
 
 function preload() {
      homesong = loadSound("/songs/homescreen.mp3");
-    
+     bicepSong = loadSound("songs/bicep.mp3");
+    kaySong = loadSound("songs/kay.mp3");
+    disSong = loadSound("songs/dis.mp3");
+    highSong = loadSound("songs/high.mp3");
+     loadImages();
 }
    
     
 
 function setup() {
-    
+ 
     var cnv = createCanvas(1920, 500);
     cnv.position(0, 200);
-   p5.disableFriendlyErrors = true;
-
-    fft = new p5.FFT();
+     p5.disableFriendlyErrors = true;
+     fft = new p5.FFT();
      player = new Player();
      enemy = new Enemy();
      powerup = new Powerup();
-     loadImages();
-       
     for(var i = 0;  i < 100; i++){
         
        particleArray[i] = new Particle();
@@ -86,12 +91,11 @@ function setup() {
         
         starArray2[i] = new Stars();
     }
-     playSong();
+     homesong.play();
+    }
     
 
 
-   
-}
 
 function draw() {
  
@@ -102,39 +106,160 @@ function draw() {
     if (state == 0.5){
        songScreen();  
     }
-   if (state==1){
+    
+    if (state == 0.7){
+        homesong.pause();
+        bicep.visible = false;
+        kay.visible = false;
+        dis.visible = false;
+        high.visible = false;
+        cycleBG(); 
+        analyzeSound();
+        starSpawner();
+        enemy.enemyImage.visible = true;
+        
+        player.shipImage.visible = true;
+        player.shipImage.position.y = -10;
+        player.playerRespawning = true;
+        state = 0.8;
+    }
+    if (state == 0.8) {
+        cycleBG();
+        player.disablePlayerControls = true;
+        starSpawner();
+        player.respawn()
+        player.update();
+        drawSprites();
+        if(player.playerRespawning == false) {
+            state = 0.9;
+        }
+    }
+    if (state == 0.9){
+       
+     
+        analyzeSound();
+         cycleBG();
+        player.disablePlayerControls = false;
+        starSpawner();
+        player.respawn()
+        player.update();
+        drawSprites();
+       
+        state = 1;
+        if(songPlaying === false){
+            print("play");
+            songPlaying = true;
+                song.play();
+           
+        }
+     
+    }
+
+   if (state== 1){
+       smooth();
        mainGame();
    }
+      
 }
 
-function playSong(){
-    homesong.play();
-}
+
+
 function homeScreen() {
     cycleBG();
     analyzeSound();
     starSpawner();
     imageMode(CENTER);
-    image(logoplanet, width/2 -150,600, 700, 600);
-    image(logo, width/2 - 130,height/2 - 20);
+    image(logoplanet, width/2,600, 700, 600);
+    image(logo, width/2,height/2);
     fill(255);
     textSize(40);
-    text("Click To Begin", width/2 - 270, 400);
-   // drawSprites();
-  
+    text("Click To Begin", width/2 - 100, 400);
+   
 }
+
+
 function songScreen(){
   
-     cycleBG();
-    analyzeSound();
-    starSpawner();
+  cycleBG();
+  analyzeSound();
+  starSpawner();
+  imageMode(CENTER);
+  bicep.position.x = width/2;
+  bicep.position.y = 120;
+  kay.position.x = width/2;
+  kay.position.y = 220;
+  dis.position.x = width/2;
+  dis.position.y = 320;
+  high.position.x = width/2;
+  high.position.y = 420;
     
-     for(var i = 0; i < particleArray.length; i++) {
+    
+    
+    
+     if(bicep.mouseIsOver){
+    bicep.changeAnimation('selected');
       
-         particleArray[i].update(100,400,100,400);
-
-  }
+    }else{
+         bicep.changeAnimation('idle');
+    }
+        if(kay.mouseIsOver){
+    kay.changeAnimation('selected');
+      
+    }else{
+         kay.changeAnimation('idle');
+    }
+    
+        if(dis.mouseIsOver){
+    dis.changeAnimation('selected');
+      
+    }else{
+         dis.changeAnimation('idle');
+    }
+        if(high.mouseIsOver){
+    high.changeAnimation('selected');
+      
+    }else{
+         high.changeAnimation('idle');
+    }
+    if (state == 0.5){
+    if(bicep.mouseIsPressed){
+        
+        song = bicepSong;
+        lowestValue = 200;
+        highestValue = 400;
+       state = 0.7;
+        }
+    
+     if(kay.mouseIsPressed){
+        
+        song = kaySong;
+        lowestValue = 250;
+        highestValue = 450;
+       state = 0.7;
+        }
+         if(dis.mouseIsPressed){
+        
+        song = disSong;
+        lowestValue = 250;
+        highestValue = 450;
+       state = 0.7;
+        }
+    
+         if(high.mouseIsPressed){
+        
+        song = highSong;
+        lowestValue = 200;
+        highestValue = 400;
+       state = 0.7;
+        }}
+    bicep.mouseActive = true;
+    kay.mouseActive = true;
+    dis.mouseActive = true;
+    high.mouseActive = true;
+   drawSprites();
 }
+
+
  function mainGame() {
   
     cycleBG();
@@ -154,7 +279,36 @@ function loadImages() {
     logo = loadImage("/images/homescreen/logo.png");
     logoplanet = loadImage("/images/homescreen/planet6.png");
     backdrop = loadImage("images/background2.png");
-
+    
+    kay = createSprite(); 
+    kay.addImage(loadImage("images/songSelection/kay/idle.png"));
+    kay.addAnimation('idle',"images/songSelection/kay/idle.png")
+    kay.addAnimation('selected',"images/songSelection/kay/kaytra00.png","images/songSelection/kay/kaytra14.png")
+    kay.scale = 0.3;
+    
+    
+    bicep = createSprite(); 
+    bicep.addImage(loadImage("images/songSelection/Bicep/idle00.png"));
+    bicep.addAnimation('idle',"images/songSelection/Bicep/idle00.png")
+    bicep.addAnimation('selected',"images/songSelection/Bicep/bicep00.png","images/songSelection/Bicep/bicep14.png")
+    bicep.scale = 0.3;
+    
+    
+    
+    high = createSprite(); 
+    high.addImage(loadImage("images/songSelection/high/idle00.png"));
+    high.addAnimation('idle',"images/songSelection/high/idle00.png");
+    high.addAnimation('selected',"images/songSelection/high/high00.png","images/songSelection/high/high14.png");
+    high.scale = 0.3;
+   
+    
+    dis = createSprite(); 
+    dis.addImage(loadImage("images/songSelection/dis/idle00.png"));
+    dis.addAnimation('idle',"images/songSelection/dis/idle00.png");
+    dis.addAnimation('selected',"images/songSelection/dis/dis00.png","images/songSelection//dis/dis14.png")
+    dis.scale = 0.3;
+  
+ 
 }
 function cycleBG(){
     background(0);

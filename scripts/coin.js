@@ -2,7 +2,7 @@ class Coin {
     
     
     constructor() {
-        this.coinXPosition = width + 10;
+        this.coinXPosition = width + 40;
         this.coinYPosition = random(20, height -20);
         this.coinImage = createSprite(this.coinXPosition, this.coinYPosition);
         this.coinImage.scale = 0.7;

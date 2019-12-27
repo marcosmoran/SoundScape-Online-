@@ -5,7 +5,7 @@ class Player {
         this.shipXSpawnPosition = 1200;
         this.shipXCurrentPosition;
         this.playerDead = false;
-        this.playerRespawning;
+        this.playerRespawning =false;
         this.shipPosition = 4;
         this.shipImage = createSprite();
         this.shipImage.addImage(loadImage("images/alien1.png"));
@@ -16,6 +16,7 @@ class Player {
         this.disablePlayerControls = false;
         this.knockback = false;
         this.knockset = false;
+        this.shipImage.visible = false;
     }
 
     

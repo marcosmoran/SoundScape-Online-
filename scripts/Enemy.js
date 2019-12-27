@@ -12,7 +12,7 @@ class Enemy {
         this.eatAnimation = this.enemyImage.addAnimation('eatAnimation',"images/eat/eat1.png", "images/eat/eat3.png");
         this.enemyImage.setCollider('circle', 50, 110, 70);
         this.eatAnimation.frameDelay = 10;
-  
+        this.enemyImage.visible = false;
         this.enemyImage.maxSpeed = 2;
         this.returnToFly = false;
         this.eating = false;
